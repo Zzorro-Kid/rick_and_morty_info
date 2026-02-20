@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../injection_container.dart' as di;
 import '../../../characters/domain/entities/character_model.dart';
-import '../../../characters/presentation/utils/character_status_helper.dart';
+import '../../../../core/utils/character_status_helper.dart';
 import '../../../characters_episodes/presentation/widgets/episodes_list.dart';
 import '../cubit/characters_details/characters_details_cubit.dart';
 import '../cubit/characters_details/characters_details_state.dart';

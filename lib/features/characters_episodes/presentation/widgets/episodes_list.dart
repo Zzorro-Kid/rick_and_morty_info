@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../injection_container.dart' as di;
-import '../../../characters/presentation/utils/navigation_helper.dart';
+import '../../../../core/utils/navigation_helper.dart';
 import '../cubit/episodes/episodes_cubit.dart';
 
 class EpisodesList extends StatelessWidget {

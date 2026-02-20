@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../characters_details/presentation/pages/character_detail_page.dart';
-import '../../../characters_episodes/presentation/pages/episode_detail_page.dart';
+import '../../features/characters_details/presentation/pages/character_detail_page.dart';
+import '../../features/characters_episodes/presentation/pages/episode_detail_page.dart';
 
 class NavigationHelper {
   static void navigateToCharacterDetail(BuildContext context, int characterId) {

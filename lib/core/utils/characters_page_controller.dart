@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../cubit/characters/characters_cubit.dart';
+import '../../features/characters/presentation/cubit/characters/characters_cubit.dart';
 import 'navigation_helper.dart';
 
 class CharactersPageController {

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/character_model.dart';
-import '../utils/character_status_helper.dart';
+import '../../../../core/utils/character_status_helper.dart';
 
 class CharacterCard extends StatelessWidget {
   const CharacterCard({

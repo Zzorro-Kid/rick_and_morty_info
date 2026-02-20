@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../injection_container.dart' as di;
+import '../../../../core/utils/navigation_helper.dart';
 import '../../../characters/domain/entities/character_model.dart';
-import '../../../characters/presentation/utils/navigation_helper.dart';
 import '../cubit/episode_detail/episode_detail_cubit.dart';
 import '../widgets/episode_code_badge.dart';
 import '../widgets/episode_info_card.dart';

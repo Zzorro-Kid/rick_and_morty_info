@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/utils/characters_page_controller.dart';
 import '../../../../injection_container.dart';
 import '../cubit/characters/characters_cubit.dart';
-import '../utils/characters_page_controller.dart';
 import '../widgets/character_card.dart';
 
 class CharactersPage extends StatefulWidget {
