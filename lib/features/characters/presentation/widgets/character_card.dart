@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/character_model.dart';
+import '../utils/character_status_helper.dart';
 
 class CharacterCard extends StatelessWidget {
   const CharacterCard({
@@ -94,11 +95,10 @@ class CharacterCard extends StatelessWidget {
   }
 
   Widget _buildStatusBadge(ColorScheme colorScheme) {
-    final (color, label) = switch (character.status.toLowerCase()) {
-      'alive' => (Colors.green, 'Alive'),
-      'dead' => (Colors.red, 'Dead'),
-      _ => (colorScheme.outline, 'Unknown'),
-    };
+    final (color, label) = CharacterStatusHelper.getStatusData(
+      character.status,
+      colorScheme,
+    );
 
     return Row(
       mainAxisSize: MainAxisSize.min,

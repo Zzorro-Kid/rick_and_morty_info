@@ -1,10 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/router/app_router.dart';
 import '../../../../../injection_container.dart' as di;
 import '../../../characters/domain/entities/character_model.dart';
+import '../../../characters/presentation/utils/navigation_helper.dart';
 import '../cubit/episode_detail/episode_detail_cubit.dart';
+import '../widgets/episode_character_tile.dart';
+import '../widgets/episode_code_badge.dart';
+import '../widgets/episode_info_card.dart';
 
 class EpisodeDetailPage extends StatelessWidget {
   const EpisodeDetailPage({super.key, required this.episodeId});
@@ -61,117 +63,85 @@ class EpisodeDetailPage extends StatelessWidget {
 
     return CustomScrollView(
       slivers: [
-        SliverAppBar(
-          pinned: true,
-          backgroundColor: colorScheme.surface,
-          foregroundColor: colorScheme.onSurface,
-          scrolledUnderElevation: 0,
-          expandedHeight: 160,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    colorScheme.primaryContainer,
-                    colorScheme.secondaryContainer,
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.movie_outlined,
-                  size: 72,
-                  color: colorScheme.onPrimaryContainer.withOpacity(0.4),
-                ),
-              ),
-            ),
-          ),
-        ),
+        _buildSliverAppBar(colorScheme),
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildEpisodeCode(context, episode.episode, colorScheme),
-                const SizedBox(height: 8),
-                Text(
-                  episode.name,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                _buildInfoCard(context, episode.airDate, colorScheme),
-                const SizedBox(height: 24),
-                _buildCharactersSection(context, state, colorScheme),
-              ],
-            ),
-          ),
+          child: _buildLoadedContent(context, episode, state, colorScheme),
         ),
       ],
     );
   }
 
-  Widget _buildEpisodeCode(
-    BuildContext context,
-    String code,
-    ColorScheme colorScheme,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        code,
-        style: TextStyle(
-          color: colorScheme.onPrimaryContainer,
-          fontWeight: FontWeight.bold,
-          fontSize: 13,
-        ),
+  Widget _buildSliverAppBar(ColorScheme colorScheme) {
+    return SliverAppBar(
+      pinned: true,
+      backgroundColor: colorScheme.surface,
+      foregroundColor: colorScheme.onSurface,
+      scrolledUnderElevation: 0,
+      expandedHeight: 160,
+      flexibleSpace: FlexibleSpaceBar(
+        background: _buildAppBarBackground(colorScheme),
       ),
     );
   }
 
-  Widget _buildInfoCard(
+  Widget _buildAppBarBackground(ColorScheme colorScheme) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.primaryContainer,
+            colorScheme.secondaryContainer,
+          ],
+        ),
+      ),
+      child: Center(child: _buildAppBarIcon(colorScheme)),
+    );
+  }
+
+  Widget _buildAppBarIcon(ColorScheme colorScheme) {
+    return Icon(
+      Icons.movie_outlined,
+      size: 72,
+      color: colorScheme.onPrimaryContainer.withOpacity(0.4),
+    );
+  }
+
+  Widget _buildLoadedContent(
     BuildContext context,
-    String airDate,
+    dynamic episode,
+    EpisodeDetailState state,
     ColorScheme colorScheme,
   ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.calendar_today_outlined,
-            size: 20,
-            color: colorScheme.primary,
-          ),
-          const SizedBox(width: 12),
+          _buildEpisodeCode(context, episode.episode),
+          const SizedBox(height: 8),
           Text(
-            'Release date',
-            style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14),
+            episode.name,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
-          const Spacer(),
-          Text(
-            airDate,
-            style: TextStyle(
-              color: colorScheme.onSurface,
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-            ),
-          ),
+          const SizedBox(height: 20),
+          _buildInfoCard(context, episode.airDate),
+          const SizedBox(height: 24),
+          _buildCharactersSection(context, state, colorScheme),
         ],
       ),
     );
+  }
+
+  Widget _buildEpisodeCode(BuildContext context, String code) {
+    return EpisodeCodeBadge(code: code);
+  }
+
+  Widget _buildInfoCard(BuildContext context, String airDate) {
+    return EpisodeInfoCard(airDate: airDate);
   }
 
   Widget _buildCharactersSection(
@@ -261,83 +231,18 @@ class EpisodeDetailPage extends StatelessWidget {
       itemCount: characters.length,
       separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) =>
-          _buildCharacterTile(context, characters[index], colorScheme),
+          _buildCharacterTile(context, characters[index]),
     );
   }
 
-  Widget _buildCharacterTile(
-    BuildContext context,
-    CharacterModel character,
-    ColorScheme colorScheme,
-  ) {
-    return Material(
-      color: colorScheme.surfaceContainerHigh,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRouter.characterDetail,
-          arguments: {'characterId': character.id},
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                  imageUrl: character.image,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                  placeholder: (_, __) => Container(
-                    width: 48,
-                    height: 48,
-                    color: colorScheme.surfaceContainerHighest,
-                  ),
-                  errorWidget: (_, __, ___) => Container(
-                    width: 48,
-                    height: 48,
-                    color: colorScheme.surfaceContainerHighest,
-                    child: Icon(
-                      Icons.person,
-                      color: colorScheme.outline,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      character.name,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      character.species,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.chevron_right_rounded,
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ],
-          ),
-        ),
-      ),
+  Widget _buildCharacterTile(BuildContext context, CharacterModel character) {
+    return EpisodeCharacterTile(
+      character: character,
+      onTap: () => _navigateToCharacterDetail(context, character.id),
     );
+  }
+
+  void _navigateToCharacterDetail(BuildContext context, int characterId) {
+    NavigationHelper.navigateToCharacterDetail(context, characterId);
   }
 }

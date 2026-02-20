@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../injection_container.dart' as di;
 import '../../../characters/domain/entities/character_model.dart';
+import '../../../characters/presentation/utils/character_status_helper.dart';
 import '../../../characters_episodes/presentation/widgets/episodes_list.dart';
 import '../cubit/characters_details/characters_details_cubit.dart';
 import '../cubit/characters_details/characters_details_state.dart';
@@ -154,11 +155,10 @@ class CharacterDetailPage extends StatelessWidget {
 
   Widget _buildNameAndStatus(BuildContext context, CharacterModel character) {
     final colorScheme = Theme.of(context).colorScheme;
-    final (statusColor, statusLabel) = switch (character.status.toLowerCase()) {
-      'alive' => (Colors.green, 'Alive'),
-      'dead' => (Colors.red, 'Dead'),
-      _ => (colorScheme.outline, 'Unknown'),
-    };
+    final (statusColor, statusLabel) = CharacterStatusHelper.getStatusData(
+      character.status,
+      colorScheme,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/router/app_router.dart';
 import '../../../../../injection_container.dart' as di;
+import '../../../characters/presentation/utils/navigation_helper.dart';
 import '../cubit/episodes/episodes_cubit.dart';
 
 class EpisodesList extends StatelessWidget {
@@ -57,11 +57,8 @@ class EpisodesList extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
-            onTap: () => Navigator.pushNamed(
-              context,
-              AppRouter.episodeDetail,
-              arguments: {'episodeId': episode.id},
-            ),
+            onTap: () =>
+                NavigationHelper.navigateToEpisodeDetail(context, episode.id),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(

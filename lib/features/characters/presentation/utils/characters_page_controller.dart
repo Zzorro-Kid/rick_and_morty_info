@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/router/app_router.dart';
 import '../cubit/characters/characters_cubit.dart';
+import 'navigation_helper.dart';
 
 class CharactersPageController {
   CharactersPageController({
@@ -45,10 +45,6 @@ class CharactersPageController {
   }
 
   void onCharacterTap(BuildContext context, dynamic character) {
-    Navigator.pushNamed(
-      context,
-      AppRouter.characterDetail,
-      arguments: {'characterId': character.id},
-    );
+    NavigationHelper.navigateToCharacterDetail(context, character.id);
   }
 }
