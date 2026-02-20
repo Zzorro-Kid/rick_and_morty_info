@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import '../../../../core/router/app_router.dart';
+import '../../../characters_details/presentation/pages/character_detail_page.dart';
+import '../../../characters_episodes/presentation/pages/episode_detail_page.dart';
 
 class NavigationHelper {
   static void navigateToCharacterDetail(BuildContext context, int characterId) {
-    Navigator.pushNamed(
+    Navigator.push(
       context,
-      AppRouter.characterDetail,
-      arguments: {'characterId': characterId},
+      MaterialPageRoute(
+        builder: (_) => CharacterDetailPage(characterId: characterId),
+      ),
     );
   }
 
   static void navigateToEpisodeDetail(BuildContext context, int episodeId) {
-    Navigator.pushNamed(
+    Navigator.push(
       context,
-      AppRouter.episodeDetail,
-      arguments: {'episodeId': episodeId},
+      MaterialPageRoute(
+        builder: (_) => EpisodeDetailPage(episodeId: episodeId),
+      ),
     );
   }
 }

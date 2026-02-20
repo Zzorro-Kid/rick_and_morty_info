@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'core/router/app_router.dart';
 import 'injection_container.dart' as di;
+import 'features/characters/presentation/pages/сharacters_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Rick and Morty',
       theme: _buildTheme(),
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.charactersList,
+      home: const CharactersPage(),
     );
   }
 
