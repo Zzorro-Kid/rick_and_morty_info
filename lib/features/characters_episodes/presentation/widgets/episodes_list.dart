@@ -12,11 +12,8 @@ class EpisodesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          di.sl<EpisodesCubit>()..loadEpisodes(episodeUrls),
-      child: BlocBuilder<EpisodesCubit, EpisodesState>(
-        builder: _buildBody,
-      ),
+      create: (_) => di.sl<EpisodesCubit>()..loadEpisodes(episodeUrls),
+      child: BlocBuilder<EpisodesCubit, EpisodesState>(builder: _buildBody),
     );
   }
 
@@ -25,24 +22,27 @@ class EpisodesList extends StatelessWidget {
 
     return switch (state.status) {
       EpisodesStatus.initial || EpisodesStatus.loading => const Padding(
-          padding: EdgeInsets.all(24),
-          child: Center(child: CircularProgressIndicator()),
-        ),
+        padding: EdgeInsets.all(24),
+        child: Center(child: CircularProgressIndicator()),
+      ),
       EpisodesStatus.failure => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'Не удалось загрузить эпизоды',
-            style: TextStyle(color: colorScheme.error),
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? 'Failed to load episodes',
+          style: TextStyle(color: colorScheme.error),
         ),
+      ),
       EpisodesStatus.success => _buildList(context, state, colorScheme),
     };
   }
 
   Widget _buildList(
-      BuildContext context, EpisodesState state, ColorScheme colorScheme) {
+    BuildContext context,
+    EpisodesState state,
+    ColorScheme colorScheme,
+  ) {
     if (state.episodes.isEmpty) {
-      return const Center(child: Text('Нет эпизодов'));
+      return const Center(child: Text('No Episodes'));
     }
 
     return ListView.separated(
@@ -68,7 +68,9 @@ class EpisodesList extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(6),
@@ -91,8 +93,10 @@ class EpisodesList extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Icon(Icons.chevron_right_rounded,
-                      color: colorScheme.onSurfaceVariant),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ],
               ),
             ),

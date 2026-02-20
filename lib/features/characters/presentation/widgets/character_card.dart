@@ -95,9 +95,9 @@ class CharacterCard extends StatelessWidget {
 
   Widget _buildStatusBadge(ColorScheme colorScheme) {
     final (color, label) = switch (character.status.toLowerCase()) {
-      'alive' => (Colors.green, 'Живой'),
-      'dead' => (Colors.red, 'Мёртвый'),
-      _ => (colorScheme.outline, 'Неизвестно'),
+      'alive' => (Colors.green, 'Alive'),
+      'dead' => (Colors.red, 'Dead'),
+      _ => (colorScheme.outline, 'Unknown'),
     };
 
     return Row(

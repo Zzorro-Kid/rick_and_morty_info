@@ -41,14 +41,14 @@ class EpisodeDetailPage extends StatelessWidget {
           Icon(Icons.error_outline, size: 48, color: colorScheme.error),
           const SizedBox(height: 12),
           Text(
-            state.errorMessage ?? 'Что-то пошло не так',
+            state.errorMessage ?? 'Something went wrong',
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () =>
                 context.read<EpisodeDetailCubit>().loadEpisode(episodeId),
-            child: const Text('Повторить'),
+            child: const Text('Retry'),
           ),
         ],
       ),
@@ -157,7 +157,7 @@ class EpisodeDetailPage extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Text(
-            'Дата выхода',
+            'Release date',
             style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14),
           ),
           const Spacer(),
@@ -185,7 +185,7 @@ class EpisodeDetailPage extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Персонажи',
+              'Characters',
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -234,7 +234,7 @@ class EpisodeDetailPage extends StatelessWidget {
       EpisodeDetailCharactersStatus.failure => Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          state.errorMessage ?? 'Не удалось загрузить персонажей',
+          state.errorMessage ?? 'Failed to load characters',
           style: TextStyle(color: colorScheme.error),
         ),
       ),
@@ -252,7 +252,7 @@ class EpisodeDetailPage extends StatelessWidget {
     ColorScheme colorScheme,
   ) {
     if (characters.isEmpty) {
-      return const Center(child: Text('Нет персонажей'));
+      return const Center(child: Text('No characters'));
     }
 
     return ListView.separated(

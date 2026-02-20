@@ -38,7 +38,7 @@ class CharacterDetailPage extends StatelessWidget {
         content: Text(message),
         backgroundColor: Colors.red,
         action: SnackBarAction(
-          label: 'Повторить',
+          label: 'Retry',
           textColor: Colors.white,
           onPressed: () => context
               .read<CharacterDetailCubit>()
@@ -51,8 +51,8 @@ class CharacterDetailPage extends StatelessWidget {
   Widget _buildBody(BuildContext context, CharacterDetailState state) {
     return switch (state) {
       CharacterDetailInitial() || CharacterDetailLoading() => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        child: CircularProgressIndicator(),
+      ),
       CharacterDetailLoaded() => _buildLoaded(context, state.character),
       CharacterDetailError() => _buildError(context, state.message),
     };
@@ -72,7 +72,7 @@ class CharacterDetailPage extends StatelessWidget {
             onPressed: () => context
                 .read<CharacterDetailCubit>()
                 .loadCharacterDetail(characterId),
-            child: const Text('Повторить'),
+            child: const Text('Retry'),
           ),
         ],
       ),
@@ -155,18 +155,18 @@ class CharacterDetailPage extends StatelessWidget {
   Widget _buildNameAndStatus(BuildContext context, CharacterModel character) {
     final colorScheme = Theme.of(context).colorScheme;
     final (statusColor, statusLabel) = switch (character.status.toLowerCase()) {
-      'alive' => (Colors.green, 'Живой'),
-      'dead' => (Colors.red, 'Мёртвый'),
-      _ => (colorScheme.outline, 'Неизвестно'),
+      'alive' => (Colors.green, 'Alive'),
+      'dead' => (Colors.red, 'Dead'),
+      _ => (colorScheme.outline, 'Unknown'),
     };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           character.name,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Row(
@@ -175,13 +175,14 @@ class CharacterDetailPage extends StatelessWidget {
               width: 10,
               height: 10,
               decoration: BoxDecoration(
-                  color: statusColor, shape: BoxShape.circle),
+                color: statusColor,
+                shape: BoxShape.circle,
+              ),
             ),
             const SizedBox(width: 6),
             Text(
               '$statusLabel • ${character.species}',
-              style: TextStyle(
-                  color: statusColor, fontWeight: FontWeight.w500),
+              style: TextStyle(color: statusColor, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -198,27 +199,44 @@ class CharacterDetailPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildInfoRow(context, icon: Icons.category_outlined,
-              label: 'Тип',
-              value: character.type.isEmpty ? 'Неизвестно' : character.type),
+          _buildInfoRow(
+            context,
+            icon: Icons.category_outlined,
+            label: 'Type',
+            value: character.type.isEmpty ? 'Unknown' : character.type,
+          ),
           _buildDivider(colorScheme),
-          _buildInfoRow(context, icon: Icons.wc_outlined,
-              label: 'Пол', value: character.gender),
+          _buildInfoRow(
+            context,
+            icon: Icons.wc_outlined,
+            label: 'Gender',
+            value: character.gender,
+          ),
           _buildDivider(colorScheme),
-          _buildInfoRow(context, icon: Icons.public_outlined,
-              label: 'Происхождение', value: character.origin.name),
+          _buildInfoRow(
+            context,
+            icon: Icons.public_outlined,
+            label: 'Origin',
+            value: character.origin.name,
+          ),
           _buildDivider(colorScheme),
-          _buildInfoRow(context, icon: Icons.location_on_outlined,
-              label: 'Локация', value: character.location.name),
+          _buildInfoRow(
+            context,
+            icon: Icons.location_on_outlined,
+            label: 'Location',
+            value: character.location.name,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(BuildContext context,
-      {required IconData icon,
-      required String label,
-      required String value}) {
+  Widget _buildInfoRow(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -226,17 +244,21 @@ class CharacterDetailPage extends StatelessWidget {
         children: [
           Icon(icon, size: 20, color: colorScheme.primary),
           const SizedBox(width: 12),
-          Text(label,
-              style: TextStyle(
-                  color: colorScheme.onSurfaceVariant, fontSize: 14)),
+          Text(
+            label,
+            style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14),
+          ),
           const Spacer(),
           Flexible(
-            child: Text(value,
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14)),
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+            ),
           ),
         ],
       ),
@@ -245,30 +267,28 @@ class CharacterDetailPage extends StatelessWidget {
 
   Widget _buildDivider(ColorScheme colorScheme) {
     return Divider(
-        height: 1,
-        indent: 16,
-        endIndent: 16,
-        color: colorScheme.outlineVariant);
+      height: 1,
+      indent: 16,
+      endIndent: 16,
+      color: colorScheme.outlineVariant,
+    );
   }
 
-  Widget _buildEpisodesSection(
-      BuildContext context, CharacterModel character) {
+  Widget _buildEpisodesSection(BuildContext context, CharacterModel character) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Text(
-              'Эпизоды',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+              'Episodes',
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(20),

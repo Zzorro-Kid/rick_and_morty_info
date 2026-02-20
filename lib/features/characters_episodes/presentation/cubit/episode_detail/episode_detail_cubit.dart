@@ -29,11 +29,13 @@ class EpisodeDetailCubit extends Cubit<EpisodeDetailState> {
         ),
       ),
       (episode) async {
-        emit(state.copyWith(
-          status: EpisodeDetailStatus.success,
-          episode: episode,
-          charactersStatus: EpisodeDetailCharactersStatus.loading,
-        ));
+        emit(
+          state.copyWith(
+            status: EpisodeDetailStatus.success,
+            episode: episode,
+            charactersStatus: EpisodeDetailCharactersStatus.loading,
+          ),
+        );
         await _loadCharacters(episode.characters);
       },
     );
@@ -41,20 +43,20 @@ class EpisodeDetailCubit extends Cubit<EpisodeDetailState> {
 
   Future<void> _loadCharacters(List<String> urls) async {
     if (urls.isEmpty) {
-      emit(state.copyWith(
-        charactersStatus: EpisodeDetailCharactersStatus.success,
-        characters: [],
-      ));
+      emit(
+        state.copyWith(
+          charactersStatus: EpisodeDetailCharactersStatus.success,
+          characters: [],
+        ),
+      );
       return;
     }
 
-    // извлекаем ID из URL вида https://rickandmortyapi.com/api/character/1
     final ids = urls
         .map((url) => int.tryParse(url.split('/').last))
         .whereType<int>()
         .toList();
 
-    // грузим по одному через getCharacterDetail, параллельно
     final futures = ids.map((id) => characterRepository.getCharacterDetail(id));
     final results = await Future.wait(futures);
 
@@ -69,15 +71,19 @@ class EpisodeDetailCubit extends Cubit<EpisodeDetailState> {
     }
 
     if (error != null && characters.isEmpty) {
-      emit(state.copyWith(
-        charactersStatus: EpisodeDetailCharactersStatus.failure,
-        errorMessage: error,
-      ));
+      emit(
+        state.copyWith(
+          charactersStatus: EpisodeDetailCharactersStatus.failure,
+          errorMessage: error,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        charactersStatus: EpisodeDetailCharactersStatus.success,
-        characters: characters,
-      ));
+      emit(
+        state.copyWith(
+          charactersStatus: EpisodeDetailCharactersStatus.success,
+          characters: characters,
+        ),
+      );
     }
   }
 }

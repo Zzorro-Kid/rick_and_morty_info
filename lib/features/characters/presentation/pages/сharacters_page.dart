@@ -31,7 +31,7 @@ class _CharactersPageState extends State<CharactersPage> {
     final errorMessage = _cubit.state.errorMessage;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text(errorMessage ?? 'Ошибка загрузки')));
+    ).showSnackBar(SnackBar(content: Text(errorMessage ?? 'Loading error')));
   }
 
   @override
@@ -75,7 +75,7 @@ class _CharactersPageState extends State<CharactersPage> {
       controller: _controller.searchController,
       onChanged: _controller.onSearchChanged,
       decoration: InputDecoration(
-        hintText: 'Поиск по имени...',
+        hintText: 'Search by name...',
         prefixIcon: const Icon(Icons.search),
         suffixIcon: _controller.searchController.text.isNotEmpty
             ? IconButton(
@@ -102,7 +102,7 @@ class _CharactersPageState extends State<CharactersPage> {
         child: CircularProgressIndicator(),
       ),
       CharactersStatus.failure => _buildError(state),
-      _ => const Center(child: Text('Ничего не найдено')),
+      _ => const Center(child: Text('Nothing found')),
     };
   }
 
@@ -113,11 +113,11 @@ class _CharactersPageState extends State<CharactersPage> {
         children: [
           const Icon(Icons.error_outline, size: 48, color: Colors.red),
           const SizedBox(height: 12),
-          Text(state.errorMessage ?? 'Что-то пошло не так'),
+          Text(state.errorMessage ?? 'Something went wrong'),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () => _controller.onRetry(state.query),
-            child: const Text('Повторить'),
+            child: const Text('Retry'),
           ),
         ],
       ),
@@ -159,7 +159,7 @@ class _CharactersPageState extends State<CharactersPage> {
     if (!state.hasNextPage) {
       return const Padding(
         padding: EdgeInsets.all(16),
-        child: Center(child: Text('Это все персонажи')),
+        child: Center(child: Text('That\'s all characters')),
       );
     }
 
