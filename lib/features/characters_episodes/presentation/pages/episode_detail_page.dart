@@ -4,9 +4,9 @@ import '../../../../../injection_container.dart' as di;
 import '../../../characters/domain/entities/character_model.dart';
 import '../../../characters/presentation/utils/navigation_helper.dart';
 import '../cubit/episode_detail/episode_detail_cubit.dart';
-import '../widgets/episode_character_tile.dart';
 import '../widgets/episode_code_badge.dart';
 import '../widgets/episode_info_card.dart';
+import '../widgets/episode_character_tile.dart';
 
 class EpisodeDetailPage extends StatelessWidget {
   const EpisodeDetailPage({super.key, required this.episodeId});
@@ -119,7 +119,7 @@ class EpisodeDetailPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEpisodeCode(context, episode.episode),
+          EpisodeCodeBadge(code: episode.episode),
           const SizedBox(height: 8),
           Text(
             episode.name,
@@ -128,7 +128,7 @@ class EpisodeDetailPage extends StatelessWidget {
             ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
-          _buildInfoCard(context, episode.airDate),
+          EpisodeInfoCard(airDate: episode.airDate),
           const SizedBox(height: 24),
           _buildCharactersSection(context, state, colorScheme),
         ],
@@ -230,19 +230,13 @@ class EpisodeDetailPage extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: characters.length,
       separatorBuilder: (_, __) => const SizedBox(height: 8),
-      itemBuilder: (context, index) =>
-          _buildCharacterTile(context, characters[index]),
+      itemBuilder: (context, index) => EpisodeCharacterTile(
+        character: characters[index],
+        onTap: () => NavigationHelper.navigateToCharacterDetail(
+          context,
+          characters[index].id,
+        ),
+      ),
     );
-  }
-
-  Widget _buildCharacterTile(BuildContext context, CharacterModel character) {
-    return EpisodeCharacterTile(
-      character: character,
-      onTap: () => _navigateToCharacterDetail(context, character.id),
-    );
-  }
-
-  void _navigateToCharacterDetail(BuildContext context, int characterId) {
-    NavigationHelper.navigateToCharacterDetail(context, characterId);
   }
 }

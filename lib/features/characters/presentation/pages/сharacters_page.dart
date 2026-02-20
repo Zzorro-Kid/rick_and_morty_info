@@ -141,10 +141,9 @@ class _CharactersPageState extends State<CharactersPage> {
       return _buildListFooter(state);
     }
 
-    final character = state.characters[index];
     return CharacterCard(
-      character: character,
-      onTap: () => _controller.onCharacterTap(context, character),
+      character: state.characters[index],
+      onTap: () => _controller.onCharacterTap(context, state.characters[index]),
     );
   }
 
